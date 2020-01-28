@@ -1,0 +1,80 @@
+/**index.wxss**/
+.userinfo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.userinfo-avatar {
+  width: 128rpx;
+  height: 128rpx;
+  margin: 20rpx;
+  border-radius: 50%;
+}
+
+.userinfo-nickname {
+  color: #aaa;
+}
+
+.usermotto {
+  margin-top: 20px;
+}
+
+.container-row {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: row;
+  width: 50%;
+} 
+
+.sign-setting-border{
+margin-left: 2%;
+width:100%;
+float: left;
+height: 30px;
+line-height: 30px;
+border-radius: 3px;
+background-color: #ffffff;
+color: #999999;
+/*font-size: 14px;*/
+text-align: center;
+font-family: -apple-system;
+margin-bottom:15px;
+border:1px solid #DBDBDB;
+}
+
+.selectedIN{
+  background-color: #FFA404;
+  color: rgba(255, 255, 255, 1);
+  border:1px solid #FFA404;
+}
+
+.selectedOUT{
+  background-color: #00A404;
+  color: rgba(255, 255, 255, 1);
+  border:1px solid #00A404;
+}
+
+.myForm{
+  margin-top:20px;
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+}
+.myForm input{
+  Float:left;
+  height: 35px;
+  width:50%; 
+  font-size:20px;
+  text-align: center;
+  vertical-align: top;
+  /*border:1px solid #DBDBDB;*/
+}
+.myForm button {
+  Float:left; 
+  height: 35px;
+  width:30%; 
+  font-size:16px;
+  vertical-align: top;  
+}
+

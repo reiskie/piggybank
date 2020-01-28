@@ -1,0 +1,29 @@
+<!--logs.wxml-->
+
+<button style="margin-top:10px" bindtap="tapClearAll" >删除所有数据</button>
+<button style="margin-top:10px;margin-bottom:10px" bindtap="tapClearBal" >余额清零</button>
+<!--
+<view class="container log-list">
+  <block wx:for="{{amtLogs}}" wx:for-item="amtLog">
+    <text class="log-item">{{index + 1}}. {{amtLog}}</text>
+  </block>
+</view>
+-->
+<view  class="table">
+  <view class="tr headspec">
+    <view class="th th1">日期</view>
+    <view class="th th2">类型</view>
+    <view class="th th3">变动</view>
+    <view class="th th4">余额</view>
+  </view>
+  <block wx:for="{{amtLogsTable}}">
+    <view class="tr rowspec">
+      <view class="td td1">{{item.date}}</view>
+      <view class="td td2">{{item.type}}</view>
+      <view class="td td3">{{item.val}}</view>
+      <view class="td td4">{{item.bal}}</view>
+    </view>
+  </block>
+</view>
+
+

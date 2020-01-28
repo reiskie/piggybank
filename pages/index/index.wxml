@@ -1,0 +1,32 @@
+<!--index.wxml-->
+<view class="container" >
+
+  <view class="userinfo">
+    <button wx:if="{{!hasUserInfo && canIUse}}" open-type="getUserInfo" bindgetuserinfo="getUserInfo"> 获取头像昵称 </button>
+    <block wx:else>
+      <image bindtap="bindViewTap" class="userinfo-avatar" src="{{userInfo.avatarUrl}}" mode="cover"></image>
+      <text class="userinfo-nickname">{{userInfo.nickName}}</text>
+    </block>
+  </view>
+
+  <view class="usermotto" >
+   <text  style="font-size:20px;">余额: {{balance}}</text>
+  </view>
+
+  <view  class="container-row">
+    <view class="sign-setting-border {{idxCategory=='in' ?'selectedIN':''}}"    bindtap='selectApply' data-id="in"> 收入 </view>
+    <view class="sign-setting-border {{idxCategory=='out'?'selectedOUT':''}}"    bindtap='selectApply' data-id="out"> 支出 </view>
+  </view>
+
+  <view class="usermotto">
+    <form bindsubmit="submitAmt"  class="myForm" >
+     <input name="inputAmt" type="number" value="{{valAmt}}" placeholder="请输入金额"/>
+     <button form-type="submit">提交</button>
+    </form>
+  </view>
+
+  <view class="usermotto" >
+   <text  style="font-size:16px;">{{msgText}}</text>
+  </view>
+
+</view>

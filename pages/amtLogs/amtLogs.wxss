@@ -1,0 +1,55 @@
+.log-list {
+  display: flex;
+  flex-direction: column;
+  padding: 40rpx;
+}
+.log-item {
+  margin: 10rpx;
+}
+
+.table {
+  border: 0px solid darkgray;
+}
+.tr {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+.headspec {
+  font-size: 30rpx;
+}
+.rowspec {
+  border-left: 1px solid #999999;
+  font-size: 30rpx;
+}
+.th {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 2rem;
+  background: #126bf0;
+  color: #fff;
+}
+.th1{
+  width: 40%;
+}
+.th2,.th3,.th4{
+  width: 20%;
+}
+.td {
+    display: flex;
+    justify-content: center;    
+    align-items: center;
+    border-right: 1px solid #999999;
+    border-bottom: 1px solid #999999;
+    white-space: nowrap;
+    overflow: hidden;
+    /*text-overflow: ellipsis; not work*/
+}
+.td1{
+  width: 40%;
+}
+.td2,.td3,.td4{
+  width: 20%;
+}
