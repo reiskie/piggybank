@@ -14,7 +14,7 @@
   "tabBar": {
     "list": [
       {
-        "text": "首页",
+        "text": "账本首页",
         "pagePath": "pages/index/index"
       },
       {
