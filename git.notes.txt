@@ -2,6 +2,15 @@
 
 
 yangxh@LAPTOP-38TU5EN3 MINGW64 /d/wechat/miniprogram-2
+$ git remote -v
+pb-github       git@github.com:reiskie/piggybank.git (fetch)
+pb-github       git@github.com:reiskie/piggybank.git (push)
+
+
+git add git.notes.txt
+git commit -m "update git.notes.txt"
+
+
 $ git branch
 * master
 
