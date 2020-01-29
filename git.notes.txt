@@ -1,0 +1,220 @@
+在github创建仓库时，自动添加了readme.md，分支master。这之后，又单独创建了本地仓库，里面有几十个文件，分支master。希望将两个分支合并。
+
+
+yangxh@LAPTOP-38TU5EN3 MINGW64 /d/wechat/miniprogram-2
+$ git branch
+* master
+
+
+# 之前设置upstream错误了，关联到远程dev分支了
+$ git status
+On branch master
+Your branch is up to date with 'pb-github/dev'.       
+nothing to commit, working tree clean
+
+## 删除远程分支pb-github/dev，删完在github网站其实还有，应该只是删了本地对应的信息
+$ git branch -av
+* master                efe4e37 init2
+  remotes/pb-github/dev efe4e37 init2
+
+$ git branch -dr pb-github/dev
+Deleted remote-tracking branch pb-github/dev (was efe4e37).
+
+$ git branch -av
+[0x7FFDE9ECD3E0] ANOMALY: meaningless REX prefix used
+* master efe4e37 [gone] init2
+
+## 再看status，提示upstream is gone.
+$ git status
+On branch master
+Your branch is based on 'pb-github/dev', but the upstream is gone.
+  (use "git branch --unset-upstream" to fixup)
+nothing to commit, working tree clean
+
+## unset upstream
+$ git branch --unset-upstream
+
+$ git status
+On branch master
+nothing to commit, working tree clean
+
+
+
+## 本地库的master分支，包含两次commit
+$ git log  
+commit efe4e372ccf1c7417b515a1c94ddb5dd265dc656 (HEAD -> master, pb-github/dev)
+Author: Brett Yang <yxhddd@163.com>
+Date:   Wed Jan 29 00:16:08 2020 +0800
+
+    init2
+
+commit a51e6b5a03c8657b9a380261b99a5a450739a65e
+Author: Brett Yang <yxhddd@163.com>
+Date:   Wed Jan 29 00:15:45 2020 +0800
+
+    init1
+
+
+
+## push失败 提示本地落后于远程
+$ git push -u pb-github master
+To github.com:reiskie/piggybank.git
+ ! [rejected]        master -> master (non-fast-forward)
+error: failed to push some refs to 'git@github.com:reiskie/piggybank.git'
+hint: Updates were rejected because the tip of your current branch is behind
+hint: its remote counterpart. Integrate the remote changes (e.g.
+hint: 'git pull ...') before pushing again.
+hint: See the 'Note about fast-forwards' in 'git push --help' for details.
+
+
+## pull失败，git的防错检查，认为两个分支没有任何相同的commit，不相关
+$ git pull pb-github master
+From github.com:reiskie/piggybank
+ * branch            master     -> FETCH_HEAD
+ * [new branch]      master     -> pb-github/master
+fatal: refusing to merge unrelated histories
+
+
+## pull成功， readme.md已经到本地
+$ git pull pb-github master --allow-unrelated-histories
+From github.com:reiskie/piggybank
+ * branch            master     -> FETCH_HEAD
+Merge made by the 'recursive' strategy.
+ README.md | 2 ++
+ 1 file changed, 2 insertions(+)
+ create mode 100644 README.md
+
+
+
+$ git branch -av
+* master                   b204814 [gone] Merge branch 'master' of github.com:reiskie/piggybank to merge a local branch created some days ago.
+  remotes/pb-github/master 9c21318 Initial commit
+
+
+$ git log
+commit b204814169e652cacded648e79f50b4b8ef750f1 (HEAD -> master)  ## 本地分支的位置
+Merge: efe4e37 9c21318
+Author: Brett Yang <yxhddd@163.com>
+Date:   Wed Jan 29 12:20:13 2020 +0800
+
+    Merge branch 'master' of github.com:reiskie/piggybank
+    to merge a local branch created some days ago.
+
+commit efe4e372ccf1c7417b515a1c94ddb5dd265dc656
+Author: Brett Yang <yxhddd@163.com>
+Date:   Wed Jan 29 00:16:08 2020 +0800
+
+    init2
+
+commit a51e6b5a03c8657b9a380261b99a5a450739a65e
+Author: Brett Yang <yxhddd@163.com>
+Date:   Wed Jan 29 00:15:45 2020 +0800
+
+    init1
+
+commit 9c21318b8f3ce90df350860240ba4f564967d316 (pb-github/master)   ## 远程分支的位置
+Author: Brett Yang <37236197+reiskie@users.noreply.github.com>
+Date:   Wed Jan 29 00:06:33 2020 +0800
+
+    Initial commit
+
+
+# status, 未与远程分支关联 
+$ git status
+On branch master
+nothing to commit, working tree clean
+
+# 设置关联
+$ git branch --set-upstream-to=pb-github/master master
+Branch 'master' set up to track remote branch 'master' from 'pb-github'.
+
+## 设置完upstream，status可以看到本地和远程分支的差距
+$ git status  
+[0x7FFDE9ECD3E0] ANOMALY: meaningless REX prefix used
+On branch master
+Your branch is ahead of 'pb-github/master' by 3 commits.     
+  (use "git push" to publish your local commits)
+nothing to commit, working tree clean
+
+
+
+
+$ git log --graph --pretty=oneline --abbrev-commit
+*   b204814 (HEAD -> master) Merge branch 'master' of github.com:reiskie/piggybank to merge a local branch created some days ago.   ## 本地位置
+|\
+| * 9c21318 (pb-github/master) Initial commit   ## 远程位置
+* efe4e37 init2
+* a51e6b5 init1
+
+
+
+# push本地修改到远程，成功
+$ git push pb-github master
+Counting objects: 2, done.
+Delta compression using up to 4 threads.
+Compressing objects: 100% (2/2), done.
+Writing objects: 100% (2/2), 347 bytes | 347.00 KiB/s, done.
+Total 2 (delta 1), reused 0 (delta 0)
+remote: Resolving deltas: 100% (1/1), completed with 1 local object.
+To github.com:reiskie/piggybank.git
+   9c21318..b204814  master -> master
+
+
+# status显示本地与远程追平
+$ git status
+On branch master
+Your branch is up to date with 'pb-github/master'.
+nothing to commit, working tree clean
+
+
+
+$ git log
+commit b204814169e652cacded648e79f50b4b8ef750f1 (HEAD -> master, pb-github/master)  # 本地远程位置在一起
+Merge: efe4e37 9c21318
+Author: Brett Yang <yxhddd@163.com>
+Date:   Wed Jan 29 12:20:13 2020 +0800
+
+    Merge branch 'master' of github.com:reiskie/piggybank
+    to merge a local branch created some days ago.
+
+commit efe4e372ccf1c7417b515a1c94ddb5dd265dc656
+Author: Brett Yang <yxhddd@163.com>
+Date:   Wed Jan 29 00:16:08 2020 +0800
+
+    init2
+
+commit a51e6b5a03c8657b9a380261b99a5a450739a65e
+Author: Brett Yang <yxhddd@163.com>
+Date:   Wed Jan 29 00:15:45 2020 +0800
+
+    init1
+
+commit 9c21318b8f3ce90df350860240ba4f564967d316
+Author: Brett Yang <37236197+reiskie@users.noreply.github.com>
+Date:   Wed Jan 29 00:06:33 2020 +0800
+
+    Initial commit
+
+
+
+
+# 本地远程位置在一起
+$ git log --graph --pretty=oneline --abbrev-commit
+*   b204814 (HEAD -> master, pb-github/master) Merge branch 'master' of github.com:reiskie/piggybank to merge a local branch created some days ago.
+|\
+| * 9c21318 Initial commit
+* efe4e37 init2
+* a51e6b5 init1
+
+
+
+
+
+
+
+
+
+
+
+
+
